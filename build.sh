@@ -78,7 +78,7 @@ merge_folder_layer() {
     local target="$1"
     local source="$2"
 
-    [ -d "$source" ] || return
+    [ -d "$source" ] || return 0
 
     cp -rT "$source" "$target"
 }
@@ -105,3 +105,59 @@ for layer in "${LAYERS[@]}"; do
 done
 
 echo "Merge complete."
+
+########################################
+# CLIENT MODS: (mods.atm ∪ mods.override) − mods.tts
+########################################
+
+echo "Building client mods..."
+
+rm -rf mods.client
+mkdir -p mods.client
+
+# Collect modIds present in mods.tts
+declare -A TTS_MODIDS
+if [ -d "mods.tts" ]; then
+    for jar in mods.tts/*.jar; do
+        [ -f "$jar" ] || continue
+        modid=$(extract_modid "$jar")
+        [ -n "$modid" ] && TTS_MODIDS["$modid"]=1
+    done
+fi
+
+# Add mods from mods.atm that are not in mods.tts
+declare -A CLIENT_MODIDS
+if [ -d "mods.atm" ]; then
+    for jar in mods.atm/*.jar; do
+        [ -f "$jar" ] || continue
+        modid=$(extract_modid "$jar")
+        if [ -z "$modid" ]; then
+            echo "modid not found in $jar, please check manually"
+            cp -f "$jar" mods.client/
+            continue
+        fi
+        if [ -z "${TTS_MODIDS[$modid]+x}" ]; then
+            cp "$jar" mods.client/
+            CLIENT_MODIDS["$modid"]=1
+        fi
+    done
+fi
+
+# Add/replace mods from mods.override that are not in mods.tts
+if [ -d "mods.override" ]; then
+    for jar in mods.override/*.jar; do
+        [ -f "$jar" ] || continue
+        modid=$(extract_modid "$jar")
+        if [ -z "$modid" ]; then
+            echo "modid not found in $jar, please check manually"
+            cp -f "$jar" mods.client/
+            continue
+        fi
+        if [ -z "${TTS_MODIDS[$modid]+x}" ]; then
+            cp -f "$jar" mods.client/
+            CLIENT_MODIDS["$modid"]=1
+        fi
+    done
+fi
+
+echo "Client mods built."

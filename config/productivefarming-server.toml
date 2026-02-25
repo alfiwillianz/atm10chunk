@@ -1,0 +1,51 @@
+[General]
+	#Max internal volume of the farm multiblock
+	# Default: 200
+	# Range: > 1
+	foundryMaxVolume = 200
+	#Max circumference of the farm multiblock
+	# Default: 200
+	# Range: > 1
+	foundryMaxCircumference = 200
+	#Max height of the farm multiblock
+	# Default: 20
+	# Range: > 1
+	foundryMaxHeight = 20
+	#Tickrate for Feeding Troughs
+	# Default: 1200
+	# Range: > 1
+	feedingTroughTickRate = 1200
+	#Tickrate for Watering Troughs
+	# Default: 1200
+	# Range: > 1
+	wateringTroughTickRate = 1200
+	#Tickrate for Fishing Traps
+	# Default: 6000
+	# Range: > 1
+	fishTrapTickRate = 6000
+	#Tickrate for Child Separator
+	# Default: 600
+	# Range: > 1
+	childSeparatorTickRate = 600
+	#Chance for clams to propagate in a fish farm
+	# Default: 0.1
+	# Range: 0.0 ~ 1.0
+	clamSpreadChance = 0.1
+	#Chance for flowers to propagate near hives
+	# Default: 0.15
+	# Range: 0.0 ~ 1.0
+	flowerPropagationChance = 0.15
+	#Chance for crops to increase traits when growing
+	# Default: 0.05
+	# Range: 0.0 ~ 1.0
+	traitIncreaseChance = 0.05
+	#Chance to get a pollen when using sieve upgrades in hives
+	# Default: 2
+	# Range: 1 ~ 100
+	pollenChanceFromSieve = 2
+	#Add traits to vanilla crops. This will add components to vanilla crop items and the crop block will be overwritten.
+	traitsOnVanillaCrops = true
+	#Spawn productive farming flowers when using bonemeal on grass blocks
+	spawnFlowersWithBonemeal = true
+	#Seeds can be obtained from farmer villager trades
+	villagersTradeSeeds = true

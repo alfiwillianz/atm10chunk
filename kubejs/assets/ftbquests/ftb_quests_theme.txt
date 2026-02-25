@@ -1,0 +1,17 @@
+[*]
+background: atm:textures/quest_assets/background.png
+
+text_color:          #FFFFFF
+hover_text_color:    #FFFFA0
+disabled_text_color: #999999
+
+context_background:    ftbquests:textures/background_tall.png; color=#0077c2; tile_size=0
+context_menu:          hollow_rectangle:{{widget_border}}; round_edges + {{context_background}}; padding=1
+
+icon:                 none
+wiki_icon:            ftbquests:textures/icon_clyde_white_rgb.png; color=#DDDDDD
+wiki_url:             https://discord.gg/allthemods
+
+full_screen_quest:                  0
+quest_view_background:              hollow_rectangle:{{widget_border}}; round_edges + ftbquests:textures/background.png; color=#009cff; padding=1
+quest_view_border:                  {{widget_border}}

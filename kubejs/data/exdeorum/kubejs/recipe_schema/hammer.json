@@ -1,0 +1,23 @@
+{
+  "keys": [
+    {
+      "name": "result",
+      "type": "item_stack",
+      "role": "output"
+    },
+    {
+      "name": "result_amount",
+      "type": {
+        "type": "kubejstweaks:codec",
+        "class": "net.minecraft.world.level.storage.loot.providers.number.NumberProviders"
+      },
+      "role": "other"
+    },
+    {
+      "name": "ingredient",
+      "type": "ingredient",
+      "role": "input"
+    }
+  ],
+  "unique": ["result"]
+}
