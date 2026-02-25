@@ -1,0 +1,13 @@
+{
+  "type": "productivebees:bee_spawning",
+  "ingredient": {
+    "item": "productivebees:slimy_nest"
+  },
+  "results": ["productivebees:slimy"],
+  "neoforge:conditions": [
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:slimy"
+    }
+  ]
+}

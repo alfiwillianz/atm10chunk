@@ -1,0 +1,50 @@
+["Boosted Growth Accelerator"]
+	# Defines the Multiplier for the internal power inventory of the Boosted Growth Accelerator.
+	# 10 would imitate the normal AE2 Growth Accelerator
+	# Default: 40
+	# Range: > 1
+	boosted_internal_energy_multiplier = 40
+	# Defines the power consumption of the Boosted Growth Accelerator consumed while running.
+	# 8 would imitate the normal AE2 Growth Accelerator
+	# Default: 42
+	# Range: > 1
+	boosted_idle_power_consumption = 200
+	# Defines the multiplier with which the Boosted Growth Accelerator will tick the adjacent blocks.
+	# 1.0f would imitate the normal AE2 Growth Accelerator
+	# Default: 4.0
+	# Range: 1.0 ~ 1.7976931348623157E308
+	boosted_speed_multiplier = 4.0
+
+["Cranked Growth Accelerator"]
+	# Defines the Multiplier for the internal power inventory of the Cranked Growth Accelerator.
+	# 10 would imitate the normal AE2 Growth Accelerator
+	# Default: 20
+	# Range: > 1
+	cranked_internal_energy_multiplier = 20
+	# Defines the power consumption of the Cranked Growth Accelerator consumed while running.
+	# 8 would imitate the normal AE2 Growth Accelerator
+	# Default: 8
+	# Range: > 1
+	cranked_idle_power_consumption = 8
+	# Defines the multiplier with which the Cranked Growth Accelerator will tick the adjacent blocks.
+	# 1.0f would imitate the normal AE2 Growth Accelerator
+	# Default: 8.0
+	# Range: 1.0 ~ 1.7976931348623157E308
+	cranked_speed_multiplier = 8.0
+
+["Directional Growth Accelerator"]
+	# Defines the Multiplier for the internal power inventory of the Directional Growth Accelerator.
+	# 10 would imitate the normal AE2 Growth Accelerator
+	# Default: 32
+	# Range: > 1
+	directional_internal_energy_multiplier = 32
+	# Defines the power consumption of the Directional Growth Accelerator consumed while running.
+	# 8 would imitate the normal AE2 Growth Accelerator
+	# Default: 20
+	# Range: > 1
+	directional_idle_power_consumption = 160
+	# Defines the multiplier with which the Directional Growth Accelerator will tick the adjacent blocks.
+	# 1.0f would imitate the normal AE2 Growth Accelerator
+	# Default: 2.0
+	# Range: 1.0 ~ 1.7976931348623157E308
+	directional_speed_multiplier = 1.6

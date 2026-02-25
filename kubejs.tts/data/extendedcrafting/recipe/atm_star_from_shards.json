@@ -1,0 +1,25 @@
+{
+  "type": "extendedcrafting:shaped_table",
+  "pattern": [
+    "    s    ",
+    "   sss   ",
+    "sssssssss",
+    " sssPsss ",
+    " sssssss ",
+    "  sssss  ",
+    " sss sss ",
+    "sss   sss",
+    "ss     ss"
+  ],
+  "key": {
+    "s": {
+      "item": "allthetweaks:atm_star_shard"
+    },
+    "P": {
+      "item": "allthetweaks:patrick_star"
+    }
+  },
+  "result": {
+    "id": "allthetweaks:atm_star"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "productivebees:item_conversion",
+  "bees": ["productivebees:sponge"],
+  "ingredients": [
+    {
+      "item": "productivebees:spawn_egg_resin_bee"
+    }
+  ],
+  "result": {
+    "components": {
+      "minecraft:entity_data": {
+        "type": "productivebees:amber",
+        "id": "productivebees:configurable_bee"
+      }
+    },
+    "count": 1,
+    "id": "productivebees:spawn_egg_configurable_bee"
+  },
+  "neoforge:conditions": [
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:amber"
+    },
+    {
+      "type": "productivebees:bee_exists",
+      "bee": "productivebees:sponge"
+    }
+  ]
+}

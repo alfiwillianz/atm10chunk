@@ -1,0 +1,15 @@
+{
+  "type": "extendedcrafting:shaped_ender_crafter",
+  "pattern": [" E ", "ESE", " E "],
+  "key": {
+    "S": {
+      "item": "geore:budding_quartz"
+    },
+    "E": {
+      "item": "ae2:certus_quartz_dust"
+    }
+  },
+  "result": {
+    "id": "ae2:flawless_budding_quartz"
+  }
+}

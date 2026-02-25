@@ -1,0 +1,34 @@
+{
+  "keys": [
+    {
+      "name": "result",
+      "type": "item_stack",
+      "role": "output"
+    },
+    {
+      "name": "ingredient",
+      "type": "ingredient",
+      "role": "input"
+    },
+    {
+      "name": "mesh",
+      "type": "ingredient",
+      "role": "input"
+    },
+    {
+      "name": "result_amount",
+      "type": {
+        "type": "kubejstweaks:codec",
+        "class": "net.minecraft.world.level.storage.loot.providers.number.NumberProviders"
+      },
+      "role": "other"
+    },
+    {
+      "name": "by_hand_only",
+      "type": "boolean",
+      "role": "other",
+      "optional": false
+    }
+  ],
+  "unique": ["result"]
+}

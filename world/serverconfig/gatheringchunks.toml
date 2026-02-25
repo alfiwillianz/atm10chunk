@@ -1,0 +1,123 @@
+
+[ChunkGeneration]
+	#Is ChunkByChunk generation enabled
+	enabled = true
+	#Should empty chunks be generated as bedrock
+	seal_world = false
+	#Should the nether start empty with chunks spawning in response to overworld spawns
+	synch_nether_chunk_spawn = true
+	#Should the generated chest be a bedrock chest
+	use_bedrock_chest = false
+	#The type of items the bedrock chest provides
+	#Allowed Values: Random, WorldCore, WorldCrystal, WorldFragment, WorldForge
+	chest_contents = "Random"
+	#The number of items the bedrock chest provides
+	#Range: 1 ~ 64
+	chest_quantity = 1
+	#How the chunk spawner works: Edge = spawn adjacent chunks, Void = spawn in void, Both = allow both
+	#Allowed Values: Edge, Void, Both
+	chunk_spawner_mode = "Both"
+	#The minimum depth at which the chunk spawner chest can spawn
+	#Range: -64 ~ 128
+	min_chest_spawn_depth = -60
+	#The maximum depth at which the chunk spawner chest can spawn
+	#Range: -64 ~ 128
+	max_chest_spawn_depth = -53
+	#The number of chunks to spawn initially
+	#Range: 0 ~ 1000
+	initial_chunks = 1
+	#Number of chunk layers to spawn per tick
+	#Range: 1 ~ 512
+	chunk_layer_spawn_rate = 8
+
+[Difficulty]
+	#Does the Chunk Engine require fuel to operate?
+	Chunk Engine Requires Fuel = false
+	#Enable the experimental chunk limit (Start with 9, upgrade via Engine)
+	Experimental Chunk Limit = false
+	#Enable automatic progression helper (gives chunk spawner if stuck)
+	Enable Progression Helper = false
+	#What restriction to place on starting location
+	#Allowed Values: Biome, None, Village
+	start_restriction = "Village"
+	#The tag or name of the biome the starting spawn should be in (if not a village, blank for any)
+	starting_biome = #minecraft:is_forest
+	#Always attempt to spawn the initial chunk in a village (overridden by Hard Mode)
+	always_spawn_village = true
+	#Should chunks include a chest with materials for generating further chunks?
+	spawn_new_chunk_chest = true
+	#Whether to spawn a full strip of chunks along an axis
+	spawn_chunk_strip = false
+	#Should the chest spawn in the initial chunk only?
+	spawn_chest_in_initial_chunk_only = false
+
+[Gameplay]
+	#Can blocks be placed outside spawned chunks
+	block_placement_allowed_outside_spawned_chunks = false
+	#Prevent leaves spawned by the chunk spawners from decaying
+	chunk_spawn_leaf_decay_disabled = false
+	#If enabled, barrier blocks will be placed around the edges of each chunk
+	#to prevent water, lava, and other liquids from flowing between chunks.
+	#Barriers are automatically removed when adjacent chunks are spawned.
+	#This prevents players from easily reaching lower chunks by following liquids.
+	enable_chunk_barriers = true
+	#Percentage chance for unstable chunks to spawn in chests (0-100)
+	#Range: -2147483648 ~ 2147483647
+	unstable_chunk_chance = 20
+
+[GatheringChunks]
+	#Allow mobs to drop world fragments when killed
+	Mobs Drop Fragments = true
+	#Percentage chance for mobs to drop fragments (0-100)
+	#Range: 0 ~ 100
+	Fragment Drop Chance (%) = 5
+	#Minimum fragments dropped by mobs (when they do drop)
+	#Range: 1 ~ 16
+	Min Fragment Drop = 1
+	#Maximum fragments dropped by mobs (when they do drop)
+	#Range: 1 ~ 16
+	Max Fragment Drop = 3
+	#Enable automatic tree spawning in chunks without wood
+	Auto-Spawn Trees = true
+	#Prevent fluids from flowing into the void
+	Prevent Fluid Flow Into Void = true
+
+[WorldForge]
+	#The rate at which the world forge processes consumed blocks, in fuel per tick
+	#Range: 1 ~ 256
+	production_rate = 1
+	#The value of fuel provided by soils (dirt, sand, gravel, etc). 0 to disallow use as fuel
+	#Range: 0 ~ 256
+	soil_fuel_value = 2
+	#The value of fuel provided by raw stones (cobblestone, deep slate cobblestone, etc). 0 to disallow use as fuel
+	#Range: 0 ~ 256
+	stone_fuel_value = 4
+	#The value of fuel provided by more valuable materials (none by default, this is for modpacks and extensions)
+	#Range: 0 ~ 256
+	strong_fuel_value = 8
+	#The cost in fuel to produce a single world fragment
+	#Range: 1 ~ 256
+	fragment_fuel_cost = 32
+
+[WorldScanner]
+	#The amount of fuel provided by each world fragment (and then scaled up for world shard, crystal and core
+	#Range: 1 ~ 512
+	fuel_per_fragment = 32
+	#The amount of fuel required to scan each chunk
+	#Range: 1 ~ 65534
+	fuel_required_per_chunk = 32
+	#The amount of fuel consumed each tick
+	#Range: 1 ~ 65534
+	fuel_consumed_per_tick = 1
+	#Enable experimental mode for the world scanner which highlights blocks in the world
+	experimental_mode = false
+
+[WorldMender]
+	#Ticks between chunk spawns per world mender (world menders will not spawn chunks if chunks are already being spawned)
+	#Range: 1 ~ 72000
+	cooldown = 1
+
+[BedrockChest]
+	#The number of blocks within the chunk above the bedrock chest allowed to remain before it will open
+	#Range: 0 ~ 65534
+	bedrock_chest_unlock_at_blocks_remaining = 16
