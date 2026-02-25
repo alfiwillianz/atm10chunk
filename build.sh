@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+shopt -s nullglob
 
 echo "== ATM Layered Merge System =="
 
@@ -9,29 +10,33 @@ LAYERS=("atm" "tts" "override")
 # Target folders to build
 TARGETS=("mods" "config" "kubejs" "defaultconfigs" "datapacks" "local")
 
-# Helper: clean build dirs
+# Clean build dirs
 for target in "${TARGETS[@]}"; do
     rm -rf "$target"
     mkdir -p "$target"
 done
 
 ########################################
-# MOD MERGE (modId-aware)
+# FAST modId extractor (zipgrep-based)
+########################################
+
+extract_modid() {
+    zipgrep -h 'modId *= *"' "$1" META-INF/*mods.toml 2>/dev/null \
+        | head -n1 \
+        | awk -F'"' '{print $2}'
+}
+
+########################################
+# SERVER MOD MERGE (priority enforced)
 ########################################
 
 declare -A MODIDS
 
-extract_modid() {
-    unzip -p "$1" META-INF/*mods.toml 2>/dev/null \
-        | grep -m1 'modId' \
-        | sed -E 's/.*modId="([^"]+)".*/\1/' \
-        || true
-}
-
 merge_mod_layer() {
     local folder="$1"
-
     [ -d "$folder" ] || return
+
+    echo "Applying $folder..."
 
     for jar in "$folder"/*.jar; do
         [ -f "$jar" ] || continue
@@ -39,31 +44,25 @@ merge_mod_layer() {
         modid=$(extract_modid "$jar")
 
         if [ -z "$modid" ]; then
-            echo "modid not found! please check them manually $jar"
+            echo "⚠ modId not found in $(basename "$jar") — copying anyway"
             cp -f "$jar" mods/
             continue
         fi
 
-        # override behavior: always replace if already exists
-        if [[ "$folder" == *".override" ]]; then
-            cp -f "$jar" mods/
-            MODIDS["$modid"]=1
-            continue
+        # If already present, remove older version (priority wins)
+        if [ -n "${MODIDS[$modid]+x}" ]; then
+            rm -f "mods/$(basename "${MODIDS[$modid]}")"
         fi
 
-        # normal behavior: only add if not present
-        if [ -z "${MODIDS[$modid]+x}" ]; then
-            cp "$jar" mods/
-            MODIDS["$modid"]=1
-        fi
+        cp -f "$jar" mods/
+        MODIDS["$modid"]="$jar"
     done
 }
 
-echo "Merging mods..."
+echo "Merging server mods..."
 
 for layer in "${LAYERS[@]}"; do
     case "$layer" in
-        base) merge_mod_layer "mods" ;;
         atm) merge_mod_layer "mods.atm" ;;
         tts) merge_mod_layer "mods.tts" ;;
         override) merge_mod_layer "mods.override" ;;
@@ -71,52 +70,44 @@ for layer in "${LAYERS[@]}"; do
 done
 
 ########################################
-# GENERIC FOLDER MERGE (overwrite-safe)
+# GENERIC FOLDER MERGE (priority overwrite)
 ########################################
 
 merge_folder_layer() {
     local target="$1"
     local source="$2"
-
-    [ -d "$source" ] || return 0
-
+    [ -d "$source" ] || return
     cp -rT "$source" "$target"
 }
 
 echo "Merging configs and data..."
 
 for layer in "${LAYERS[@]}"; do
-    for target in "${TARGETS[@]}"; do
+    for target in config kubejs defaultconfigs datapacks local; do
         case "$layer" in
-            base)
-                merge_folder_layer "$target" "$target"
-                ;;
-            atm)
-                merge_folder_layer "$target" "$target.atm"
-                ;;
-            tts)
-                merge_folder_layer "$target" "$target.tts"
-                ;;
-            override)
-                merge_folder_layer "$target" "$target.override"
-                ;;
+            atm) merge_folder_layer "$target" "$target.atm" ;;
+            tts) merge_folder_layer "$target" "$target.tts" ;;
+            override) merge_folder_layer "$target" "$target.override" ;;
         esac
     done
 done
 
-echo "Merge complete."
+echo "Server merge complete."
 
 ########################################
-# CLIENT MODS: (mods.atm ∪ mods.override) − mods.tts
+# CLIENT MOD DELTA
+# (mods.atm ∪ mods.override) − mods.tts
 ########################################
 
-echo "Building client mods..."
+echo "Building client-only mod delta..."
 
 rm -rf mods.client
 mkdir -p mods.client
 
-# Collect modIds present in mods.tts
 declare -A TTS_MODIDS
+declare -A CLIENT_MODIDS
+
+# Collect TTS modIds
 if [ -d "mods.tts" ]; then
     for jar in mods.tts/*.jar; do
         [ -f "$jar" ] || continue
@@ -125,39 +116,26 @@ if [ -d "mods.tts" ]; then
     done
 fi
 
-# Add mods from mods.atm that are not in mods.tts
-declare -A CLIENT_MODIDS
-if [ -d "mods.atm" ]; then
-    for jar in mods.atm/*.jar; do
+add_client_delta() {
+    local folder="$1"
+    [ -d "$folder" ] || return
+
+    for jar in "$folder"/*.jar; do
         [ -f "$jar" ] || continue
         modid=$(extract_modid "$jar")
-        if [ -z "$modid" ]; then
-            echo "modid not found in $jar, please check manually"
-            cp -f "$jar" mods.client/
-            continue
-        fi
+        [ -z "$modid" ] && continue
+
         if [ -z "${TTS_MODIDS[$modid]+x}" ]; then
-            cp "$jar" mods.client/
-            CLIENT_MODIDS["$modid"]=1
+            if [ -z "${CLIENT_MODIDS[$modid]+x}" ]; then
+                cp -f "$jar" mods.client/
+                CLIENT_MODIDS["$modid"]=1
+            fi
         fi
     done
-fi
+}
 
-# Add/replace mods from mods.override that are not in mods.tts
-if [ -d "mods.override" ]; then
-    for jar in mods.override/*.jar; do
-        [ -f "$jar" ] || continue
-        modid=$(extract_modid "$jar")
-        if [ -z "$modid" ]; then
-            echo "modid not found in $jar, please check manually"
-            cp -f "$jar" mods.client/
-            continue
-        fi
-        if [ -z "${TTS_MODIDS[$modid]+x}" ]; then
-            cp -f "$jar" mods.client/
-            CLIENT_MODIDS["$modid"]=1
-        fi
-    done
-fi
+add_client_delta "mods.atm"
+add_client_delta "mods.override"
 
-echo "Client mods built."
+echo "Client delta built."
+echo "== Build complete =="
