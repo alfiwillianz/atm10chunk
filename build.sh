@@ -5,10 +5,10 @@ shopt -s nullglob
 echo "== ATM Layered Merge System =="
 
 # Priority order (low → high)
-LAYERS=("atm" "tts" "override")
+LAYERS=("tts" "override")
 
 # Target folders to build
-TARGETS=("mods" "config" "kubejs" "defaultconfigs" "datapacks" "local")
+TARGETS=("mods" "config")
 
 # Clean build dirs
 for target in "${TARGETS[@]}"; do
