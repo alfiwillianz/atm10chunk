@@ -1,25 +1,32 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "== Fetching Base Modpack =="
+BASE_URL="https://www.curseforge.com/api/v1/mods/1298402/files/7674266/download"
+
+echo "Downloading base modpack..."
+curl -L "$BASE_URL" -o base.zip
+
+echo "Extracting base modpack (config, defaultconfigs, kubejs, mods)..."
+unzip -o base.zip "config/*" "defaultconfigs/*" "kubejs/*" "mods/*"
+rm base.zip
+
 echo "== Fetching Mod Layers from Google Drive =="
 
-OVERRIDE_ID="1s_dNyvWBM4Q21NexxpekAfElJuJfyaY9"
+OVERRIDE_ID="1_oMG-4BtxyytzR_bthrDbEAAOF-JKlbC"
 
 download_layer () {
     local name="$1"
-    local file_id="$2"
+    local folder_id="$2"
 
-    if [ -z "$file_id" ]; then
+    if [ -z "$folder_id" ]; then
         echo "Skipping $name (no ID set)"
         return
     fi
 
-    echo "Downloading $name..."
-    gdown "https://drive.google.com/uc?id=${file_id}" -O "${name}.zip"
-
+    echo "Downloading $name folder..."
     rm -rf "$name"
-    unzip -o "${name}.zip"
-    rm "${name}.zip"
+    gdown --folder "https://drive.google.com/drive/folders/${folder_id}" -O "$name"
 }
 
 download_layer "mods.override" "$OVERRIDE_ID"
